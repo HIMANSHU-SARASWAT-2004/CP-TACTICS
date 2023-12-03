@@ -59,6 +59,22 @@ int BS(int index){
         return lo;
     }
 }
+// Bineary search by recursion
+int BinarySearch(int arr[], int low, int high, int target)
+{
+    if (low > high)
+        return -1;
+    else
+    {
+        int middle = (low + high) / 2;
+        if (arr[middle] == target)
+            return middle;
+        else if (arr[middle] < target)
+            return BinarySearch(arr, middle + 1, high, target);
+        else
+            return BinarySearch(arr, low, middle - 1, target);
+    }
+}
 int main(){
     vector<int> nums = {5,10,10,98,66,40,33,29};    // 5,10,10,29,33,40,66,98 //0-7
     sort(nums.begin(),nums.end());
