@@ -48,3 +48,27 @@ int minimumPathSum(vector<vector<int>> &triangle, int n)
     }
     return dp[0][0];
 }
+
+https://bit.ly/3F436dK - > Maximum Path Sum in the matrix
+
+int getMaxPathSum(vector<vector<int>> &matrix)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    vector<vector<int>> dp(n, vector<int>(m, INT_MIN));
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(i == 0) dp[i][j] = matrix[i][j];
+            else{
+                int up = INT_MIN, left = INT_MIN, right = INT_MIN;
+                if(j > 0) left = dp[i-1][j-1];
+                if(j < m-1) right = dp[i-1][j+1];
+                up = dp[i-1][j];
+                dp[i][j] = matrix[i][j] + max(up, max(left, right));
+            }
+        }
+    } 
+    int ans = INT_MIN;
+    for(int i = 0; i < m; i++) ans = max(ans, dp[n-1][i]);
+    return ans;
+}
+
