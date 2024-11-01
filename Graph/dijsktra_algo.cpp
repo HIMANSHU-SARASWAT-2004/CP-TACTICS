@@ -82,6 +82,23 @@ int dijkstra(int source, int n, vector<pair<int, int>> g[])
 	return ans;
 }
 
+void dijkstra(int &source, int &n, vector<int> &time, vector<pair<int,int>> g[]){
+    time[source] = 0;
+    priority_queue<pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>>> pq;
+    pq.push({0, source});
+    while(!pq.empty()){
+        int v = pq.top().second, v_time = pq.top().first;
+        pq.pop();
+        if(time[v] < v_time) continue;
+        for(auto child : g[v]){
+            int child_v = child.first, wt = child.second;
+            if(time[v] + wt < time[child_v]){
+                time[child_v] = time[v] + wt;
+                pq.push({time[child_v], child_v});
+            }
+        }
+    }
+}
 int networkDelayTime(vector<vector<int>> &times, int n, int k)
 {
 	vector<pair<int, int>> g[N];
