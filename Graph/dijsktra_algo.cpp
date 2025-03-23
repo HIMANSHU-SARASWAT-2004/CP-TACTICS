@@ -132,6 +132,52 @@ void solve()
 	cout << networkDelayTime(times, n, k) << endl;
 }
 
+class Solution {
+	const long long INF = 1e12;
+	const int MOD = 1e9 + 7;
+	// 1976. Number of Ways to Arrive at Destination
+	//https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/description/
+	
+	public:
+		int countPaths(int n, vector<vector<int>>& roads) {
+		  vector<vector<pair<int,int>>> graph(n);
+		  for(int i = 0; i < roads.size(); i++){
+			int u = roads[i][0], v = roads[i][1], t = roads[i][2];
+			graph[u].push_back({v, t});
+			graph[v].push_back({u, t});
+		  }
+		  
+		  vector<long long> time(n, INF);
+		  vector<int> ways(n, 0);
+		  
+		  function<void(int, int)> dijkstra = [&](int source, int n){
+			time[source] = 0;
+			ways[source] = 1;
+			priority_queue<pair<long long ,int> , vector<pair<long long ,int>>, greater<>> pq;
+			pq.push({0, source});
+			while(!pq.empty()){
+			  int v = pq.top().second; long long v_time = pq.top().first;
+			  pq.pop();
+			  if(time[v] < v_time) continue;
+	
+			  for(auto child : graph[v]){
+				int child_v = child.first, wt = child.second;
+				if(time[v] + wt < time[child_v]){
+				  time[child_v] = time[v] + wt;
+				  ways[child_v] = ways[v];
+				  pq.push({time[child_v], child_v});
+				} else if(time[v] + wt == time[child_v]) {
+					ways[child_v] = (ways[child_v] + ways[v]) % MOD;
+				}
+			  }
+			}
+		  };
+		  
+		  dijkstra(0, n);
+		  return ways[n - 1];
+		}
+	};
+
 signed main()
 {
 	IOS

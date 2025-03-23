@@ -59,6 +59,28 @@ void Union(int a, int b){
 		size[a] += size[b];
 	}
 }
+struct DSU{
+    int cnt = 0;
+    vector<int> par;
+    void init(int n){
+        par.assign(n + 1, -1);
+        cnt = n;
+    }
+    int getPar(int node){
+        if(par[node] < 0) return node;
+        return par[node] = getPar(par[node]);
+    }
+    int unite(int a, int b){
+        a = getPar(a);
+        b = getPar(b);
+        if(a == b) return 0;
+        if(-par[a] < -par[b]) swap(a, b);
+        par[a] += par[b];
+        par[b] = a;
+        cnt--;
+        return 1;
+    }
+};
 
 void solve()
 {
